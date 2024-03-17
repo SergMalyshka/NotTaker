@@ -21,7 +21,7 @@ app.get('/notes', (req, res) => {
 }
 );
 
-// This view route is a GET route for the feedback page
+
 app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/index.html'))
 );
