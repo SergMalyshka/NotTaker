@@ -3,9 +3,11 @@ const path = require('path');
 const uuid = require('uuid')
 const db = path.join(__dirname, '/db/db.json')
 
+//heroku port selection
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+//helper files
 const { readFromFile, readAndAppend, readAndDelete } = require(path.join(__dirname, '/helpers/fsUtils.js'));
 
 // Middleware for parsing JSON and urlencoded form data
@@ -30,6 +32,10 @@ app.get('/api/notes', (req, res) => {
   console.info(`${req.method} request received for notes`);
   readFromFile(db).then((data) => res.json(JSON.parse(data)));
 }
+);
+
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
 app.delete('/api/notes/:id', (req, res) => {
