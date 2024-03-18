@@ -31,17 +31,25 @@ const readAndAppend = (content, file) => {
   });
 };
 
+/**
+ *  Counter method to the read and append, will delete a note with the specific ID
+ *  @param {string} id The id of the note you would want to delete.
+ *  @param {string} file The path to the file you want to delete from.
+ *  @returns {void} Nothing
+ */
 const readAndDelete = (id, file) => {
   fs.readFile(file, 'utf8', (err, data) => {
     if (err) {
       console.error(err);
     } else {
+      //parse the contents of the JSON file, loop through the notes, delete the note with the matching ID
       let parsedData = JSON.parse(data);
       for (let i = 0; i < parsedData.length; i++) {
         if (parsedData[i].id == id) {
           parsedData.splice(i, 1);
         }
       }
+      //once the note is deleted, write the remaining notes back into the file
       writeToFile(file, parsedData);
     }
   });

@@ -23,25 +23,30 @@ app.get('/notes', (req, res) => {
 }
 );
 
-
+//landing page
 app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
+//get all notes from the storage
 app.get('/api/notes', (req, res) => {
   console.info(`${req.method} request received for notes`);
   readFromFile(db).then((data) => res.json(JSON.parse(data)));
 }
 );
 
+//fallback route
 app.get('*', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
+//delete the note based off the id
 app.delete('/api/notes/:id', (req, res) => {
   try {
     console.info(`${req.method} request received for a note`);
     const { id } = req.params;
+
+    //helper method, takes ID and DB location
     readAndDelete(id, db)
     res.json("Delete request success")
   } catch {
@@ -58,13 +63,14 @@ app.post('/api/notes', (req, res) => {
 
   // If all the required properties are present
   if (title && text) {
-    // Variable for the object we will save
+    // Variable for the note we will save
     const newNote = {
       title,
       text,
       id: uuid.v4()
     };
 
+    //helper method
     readAndAppend(newNote, db);
 
     const response = {
